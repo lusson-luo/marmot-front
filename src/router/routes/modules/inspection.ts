@@ -13,11 +13,11 @@ const DASHBOARD: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: 'inspection',
-      name: 'inspection',
-      component: () => import('@/views/inspection/inspection/index.vue'),
+      path: 'all',
+      name: 'all',
+      component: () => import('@/views/inspection/all/index.vue'),
       meta: {
-        locale: 'menu.inspection.inspection',
+        locale: 'menu.inspection.all',
         requiresAuth: true,
         roles: ['*'],
       },

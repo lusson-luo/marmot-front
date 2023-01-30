@@ -7,6 +7,8 @@ import '@/views/dashboard/workplace/mock';
 
 import '@/views/dashboard/monitor/mock';
 
+import '@/views/inspection/all/mock';
+
 import '@/views/list/card/mock';
 import '@/views/list/search-table/mock';
 
