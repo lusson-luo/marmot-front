@@ -11,7 +11,7 @@ export default mergeConfig(
         strict: true,
       },
       proxy: {
-        '/api': 'http://127.0.0.1:8199',
+        '/api': 'http://127.0.0.1:8000',
       },
     },
     plugins: [

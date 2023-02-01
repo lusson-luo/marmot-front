@@ -16,13 +16,15 @@
       <a-table :columns="columns" :data="inspectionList">
         <template #optional="{ record }">
           <div>
-            <a-button type="primary" @click="inspect(record.name)">{{
+            <a-button type="primary" @click="inspect(record.id)">{{
               $t('inspect.operation.startInpect')
             }}</a-button
             >&nbsp;
-            <a-button type="primary" @click="showDetail(record.name)">{{
-              $t('inspect.operation.detail')
-            }}</a-button>
+            <a-button
+              type="primary"
+              @click="showDetail(record.id, record.scName)"
+              >{{ $t('inspect.operation.detail') }}</a-button
+            >
           </div>
         </template>
       </a-table>
@@ -104,6 +106,10 @@
     setup() {
       const columns = [
         {
+          title: 'id',
+          dataIndex: 'id',
+        },
+        {
           title: '中间件',
           dataIndex: 'name',
         },
@@ -140,7 +146,7 @@
           },
         },
         {
-          title: '通过巡检子项数',
+          title: '通过巡检次数',
           dataIndex: 'successCount',
           bodyCellStyle: () => {
             return {
@@ -149,7 +155,7 @@
           },
         },
         {
-          title: '失败巡检子项数',
+          title: '失败巡检次数',
           dataIndex: 'failedCount',
           bodyCellStyle: () => {
             return {
@@ -170,9 +176,9 @@
           slotName: 'optional',
         },
       ];
-      const inspect = (scName: string) => {
+      const inspect = (id: number) => {
         setLoading(true);
-        startInspect(scName)
+        startInspect(id)
           .then((response) => {
             handleClickSuccess();
           })
@@ -196,9 +202,9 @@
       const visible = ref(false);
       const detailList = ref<TableData[]>();
       const detailTitle = ref('');
-      const showDetail = (scName: string) => {
+      const showDetail = (id: number, scName: string) => {
         detailTitle.value = scName;
-        inspectDetail(scName)
+        inspectDetail(id)
           .then((response) => {
             detailList.value = response.data;
             visible.value = true;
