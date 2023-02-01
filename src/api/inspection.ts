@@ -5,9 +5,9 @@ export function queryInspectionList() {
   return axios.get<TableData[]>('/api/inspection/list');
 }
 
-export function startInspect(scName: string) {
+export function startInspect(iid: number) {
   return axios.get('/api/inspection/inspect', {
-    params: { sceneName: scName },
+    params: { id: iid },
   });
 }
 
