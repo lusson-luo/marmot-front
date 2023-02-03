@@ -15,6 +15,8 @@ export function startInspectAll() {
   return axios.get('/api/inspection/inspectAll');
 }
 
-export function inspectDetail(scName: string) {
-  return axios.get<TableData[]>(`/api/inspection/detail/${scName}`);
+export function inspectDetail(iid: number) {
+  return axios.get<TableData[]>(`/api/inspection/detail`, {
+    params: { id: iid },
+  });
 }

@@ -20,9 +20,11 @@
               $t('inspect.operation.startInpect')
             }}</a-button
             >&nbsp;
-            <a-button type="primary" @click="showDetail(record.name)">{{
-              $t('inspect.operation.detail')
-            }}</a-button>
+            <a-button
+              type="primary"
+              @click="showDetail(record.id, record.scName)"
+              >{{ $t('inspect.operation.detail') }}</a-button
+            >
           </div>
         </template>
       </a-table>
@@ -200,9 +202,9 @@
       const visible = ref(false);
       const detailList = ref<TableData[]>();
       const detailTitle = ref('');
-      const showDetail = (scName: string) => {
+      const showDetail = (id: number, scName: string) => {
         detailTitle.value = scName;
-        inspectDetail(scName)
+        inspectDetail(id)
           .then((response) => {
             detailList.value = response.data;
             visible.value = true;
