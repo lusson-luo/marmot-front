@@ -36,7 +36,10 @@
       @ok="handleOk"
     >
       <template #title>
-        {{ detailTitle }} {{ $t('inspect.detail.title') }}
+        {{ detailTitle }}{{ $t('inspect.detail.title') }}
+        <span style="color: var(--color-text-3)"
+          >&nbsp;[TaskId: {{ detailTaskId }}]</span
+        >
       </template>
       <div>
         <a-timeline>
@@ -202,12 +205,16 @@
       const visible = ref(false);
       const detailList = ref<TableData[]>();
       const detailTitle = ref('');
+      const detailTaskId = ref(0);
       const showDetail = (id: number, scName: string) => {
         detailTitle.value = scName;
         inspectDetail(id)
           .then((response) => {
             detailList.value = response.data;
             visible.value = true;
+            if (detailList.value.length > 0) {
+              detailTaskId.value = detailList.value[0].taskId;
+            }
           })
           .catch((error) => {
             handleClickError(error.message);
@@ -226,6 +233,7 @@
         showDetail,
         handleOk,
         detailTitle,
+        detailTaskId,
       };
     },
   };
