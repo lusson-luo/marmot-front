@@ -46,7 +46,7 @@
           <a-timeline-item
             v-for="(item, key) in detailList"
             :key="key"
-            :label="item.execTime"
+            :label="item.startTime"
           >
             <template #dot>
               <icon-check-circle-fill
@@ -59,6 +59,14 @@
               />
             </template>
             {{ item.name }}
+            <span
+              v-if="item.errMsg != ''"
+              style="color: var(--color-danger-light-4)"
+            >
+              <br />
+              error: {{ item.errMsg }}
+              <br />
+            </span>
           </a-timeline-item>
         </a-timeline>
       </div>
@@ -213,7 +221,7 @@
             detailList.value = response.data;
             visible.value = true;
             if (detailList.value.length > 0) {
-              detailTaskId.value = detailList.value[0].taskId;
+              detailTaskId.value = detailList.value[0].inspectTaskId;
             }
           })
           .catch((error) => {

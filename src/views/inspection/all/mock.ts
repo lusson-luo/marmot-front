@@ -70,41 +70,45 @@ setupMock({
     //   });
     //   return successResponseWrap(data.data);
     // });
-    Mock.mock(new RegExp('/api/inspection/detail'), () => {
-      // return failResponseWrap(null, '重新登陆', 50008);
-      const data = Mock.mock({
-        'data|1-1': [
-          {
-            id: '1',
-            taskId: 35062,
-            name: '创建数据库',
-            execStatus: true,
-            execTime: '2022-12-28 17:51',
-          },
-          {
-            id: '2',
-            taskId: 35062,
-            name: '创建表',
-            execStatus: false,
-            execTime: '2022-12-28 17:52',
-          },
-          {
-            id: '3',
-            taskId: 35062,
-            name: '插入数据',
-            execStatus: false,
-            execTime: '2022-12-28 17:52',
-          },
-          {
-            id: '4',
-            taskId: 35062,
-            name: '查询数据',
-            execStatus: true,
-            execTime: '2022-12-28 17:52',
-          },
-        ],
-      });
-      return successResponseWrap(data.data);
-    });
+    // Mock.mock(new RegExp('/api/inspection/detail'), () => {
+    //   // return failResponseWrap(null, '重新登陆', 50008);
+    //   const data = Mock.mock({
+    //     'data|1-1': [
+    //       {
+    //         id: '1',
+    //         taskId: 35062,
+    //         name: '创建数据库',
+    //         execStatus: true,
+    //         errMsg: '',
+    //         startTime: '2022-12-28 17:51',
+    //       },
+    //       {
+    //         id: '2',
+    //         taskId: 35062,
+    //         name: '创建表',
+    //         execStatus: false,
+    //         errMsg: "dial tcp 127.0.0.1:3306: connect: connection refused, drop database test2",
+    //         startTime: '2022-12-28 17:52',
+    //       },
+    //       {
+    //         id: '3',
+    //         taskId: 35062,
+    //         name: '插入数据',
+    //         execStatus: false,
+    //         errMsg: "dial tcp 127.0.0.1:3306",
+    //         startTime: '2022-12-28 17:52',
+    //       },
+    //       {
+    //         id: '4',
+    //         taskId: 35062,
+    //         name: '查询数据',
+    //         execStatus: true,
+    //         errMsg: '',
+    //         startTime: '2022-12-28 17:52',
+    //       },
+    //     ],
+    //   });
+    //   return successResponseWrap(data.data);
+    // });
   },
 });
