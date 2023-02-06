@@ -8,7 +8,7 @@ import setupMock, {
 setupMock({
   setup() {
     // Mock.mock(new RegExp('/api/inspection/list'), () => {
-    //   // return failResponseWrap(null, '重新登陆', 50008);
+    // return failResponseWrap(null, '重新登陆', 50008);
     //   const data = Mock.mock({
     //     'data|1-1': [
     //       {
@@ -19,6 +19,7 @@ setupMock({
     //         failedCount: 1000,
     //         connection: true,
     //         availability: true,
+    //         inspectLoading: true,
     //         startTime: '2022-12-28 17:51',
     //         endTime: '2022-12-28 17:53',
     //       },
@@ -30,6 +31,7 @@ setupMock({
     //         failedCount: 1000,
     //         connection: true,
     //         availability: true,
+    //         inspectLoading: false,
     //         startTime: '2022-12-28 17:51',
     //         endTime: '2022-12-28 17:53',
     //       },
@@ -41,6 +43,7 @@ setupMock({
     //         failedCount: 1000,
     //         connection: true,
     //         availability: true,
+    //         inspectLoading: false,
     //         startTime: '2022-12-28 17:51',
     //         endTime: '2022-12-28 17:53',
     //       },
@@ -52,6 +55,7 @@ setupMock({
     //         failedCount: 1000,
     //         connection: true,
     //         availability: false,
+    //         inspectLoading: false,
     //         startTime: '2022-12-28 17:51',
     //         endTime: '2022-12-28 17:53',
     //       },
@@ -63,6 +67,7 @@ setupMock({
     //         failedCount: 1000,
     //         connection: false,
     //         availability: true,
+    //         inspectLoading: true,
     //         startTime: '2022-12-28 17:51',
     //         endTime: '2022-12-28 17:53',
     //       },

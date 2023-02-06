@@ -4,7 +4,14 @@
       <a-table :columns="columns" :data="inspectionList">
         <template #optional="{ record }">
           <div>
-            <a-button type="primary" @click="inspect(record.id)">{{
+            <a-button
+              v-if="record.inspectLoading"
+              type="primary"
+              loading
+              @click="inspect(record.id)"
+              >{{ $t('inspect.operation.inpecting') }}</a-button
+            >&nbsp;
+            <a-button v-else type="primary" @click="inspect(record.id)">{{
               $t('inspect.operation.startInpect')
             }}</a-button
             >&nbsp;
@@ -100,13 +107,24 @@
     }
   };
 
-  const handleClickSuccess = () => {
+  const setInspectLoading = (
+    id: number,
+    inspectionListTmp: any,
+    value: boolean
+  ) => {
+    for (let i = 0; i < inspectionListTmp.value.length; i += 1) {
+      if (inspectionListTmp.value[i].id === id) {
+        inspectionListTmp.value[i].inspectLoading = value;
+      }
+    }
+  };
+  const inspectTaskFinished = () => {
     Modal.success({
       title: 'Success Notification',
-      content: '提交巡检任务成功',
+      content: '巡检执行结束',
     });
   };
-  const handleClickError = (err: any) => {
+  const inspectTaskFailed = (err: any) => {
     Modal.error({
       title: 'Error Notification',
       content: err,
@@ -116,10 +134,6 @@
   export default {
     setup() {
       const columns = [
-        {
-          title: 'id',
-          dataIndex: 'id',
-        },
         {
           title: '中间件',
           dataIndex: 'name',
@@ -189,12 +203,15 @@
       ];
       const inspect = (id: number) => {
         setLoading(true);
+        setInspectLoading(id, inspectionList, true);
         startInspect(id)
           .then((response) => {
-            handleClickSuccess();
+            inspectTaskFinished();
+            fetchData();
           })
           .catch((error) => {
-            handleClickError(error.message);
+            inspectTaskFailed(error.message);
+            fetchData();
           });
         setLoading(false);
       };
@@ -202,10 +219,10 @@
         setLoading(true);
         startInspectAll()
           .then((response) => {
-            handleClickSuccess();
+            inspectTaskFinished();
           })
           .catch((error) => {
-            handleClickError(error.message);
+            inspectTaskFailed(error.message);
           });
         setLoading(false);
       };
@@ -214,6 +231,7 @@
       const detailList = ref<TableData[]>();
       const detailTitle = ref('');
       const detailTaskId = ref(0);
+      const inspectLoading = ref(true);
       const showDetail = (id: number, scName: string) => {
         detailTitle.value = scName;
         inspectDetail(id)
@@ -225,7 +243,7 @@
             }
           })
           .catch((error) => {
-            handleClickError(error.message);
+            inspectTaskFailed(error.message);
           });
       };
       const handleOk = () => {
@@ -242,6 +260,7 @@
         handleOk,
         detailTitle,
         detailTaskId,
+        inspectLoading,
       };
     },
   };

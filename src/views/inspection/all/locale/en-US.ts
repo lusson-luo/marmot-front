@@ -5,5 +5,6 @@ export default {
   'inspect.operation.all': 'One-click Inspection',
   'inspect.operation.close': 'Close',
   'inspect.operation.startInpect': 'Start Inpect',
+  'inspect.operation.inpecting': 'Inpecting',
   'inspect.operation.detail': 'Detail',
 };

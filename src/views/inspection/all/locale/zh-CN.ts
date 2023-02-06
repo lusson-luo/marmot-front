@@ -5,5 +5,6 @@ export default {
   'inspect.operation.all': '一键巡检',
   'inspect.operation.close': '关闭',
   'inspect.operation.startInpect': '开始巡检',
+  'inspect.operation.inpecting': '巡检中',
   'inspect.operation.detail': '详情',
 };
