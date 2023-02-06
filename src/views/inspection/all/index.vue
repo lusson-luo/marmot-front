@@ -1,18 +1,6 @@
 <template>
   <div>
     <a-card class="general-card" :title="$t('menu.list.inpect')">
-      <a-row style="margin-bottom: 16px">
-        <a-col :span="12">
-          <a-space>
-            <a-button type="primary" @click="inspectAll()">
-              <template #icon>
-                <icon-refresh />
-              </template>
-              {{ $t('inspect.operation.all') }}
-            </a-button>
-          </a-space>
-        </a-col>
-      </a-row>
       <a-table :columns="columns" :data="inspectionList">
         <template #optional="{ record }">
           <div>
@@ -28,6 +16,18 @@
           </div>
         </template>
       </a-table>
+      <a-row style="margin-bottom: 16px">
+        <a-col :span="12">
+          <a-space>
+            <a-button type="primary" @click="inspectAll()">
+              <template #icon>
+                <icon-refresh />
+              </template>
+              {{ $t('inspect.operation.all') }}
+            </a-button>
+          </a-space>
+        </a-col>
+      </a-row>
     </a-card>
     <a-modal
       v-model:visible="visible"
