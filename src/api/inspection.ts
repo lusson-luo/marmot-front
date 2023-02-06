@@ -20,3 +20,9 @@ export function inspectDetail(iid: number) {
     params: { inspectionId: iid },
   });
 }
+
+export function startInspectSelection(selectIds: number[]) {
+  return axios.get('/api/inspection/inspectSelection', {
+    params: { ids: selectIds },
+  });
+}

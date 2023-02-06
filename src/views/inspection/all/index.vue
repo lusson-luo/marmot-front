@@ -1,7 +1,13 @@
 <template>
   <div>
     <a-card class="general-card" :title="$t('menu.list.inpect')">
-      <a-table :columns="columns" :data="inspectionList">
+      <a-table
+        v-model:selectedKeys="selectedKeys"
+        :columns="columns"
+        :data="inspectionList"
+        row-key="id"
+        :row-selection="rowSelection"
+      >
         <template #optional="{ record }">
           <div>
             <a-button
@@ -26,7 +32,7 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="inspectAll()">
+            <a-button type="primary" @click="inspectSelection(selectedKeys)">
               <template #icon>
                 <icon-refresh />
               </template>
@@ -82,16 +88,17 @@
 </template>
 
 <script lang="ts">
-  import { ref } from 'vue';
   import {
     queryInspectionList,
     startInspect,
     startInspectAll,
     inspectDetail,
+    startInspectSelection,
   } from '@/api/inspection';
   import useLoading from '@/hooks/loading';
   import type { TableData } from '@arco-design/web-vue/es/table/interface';
   import { Modal } from '@arco-design/web-vue';
+  import { reactive, ref } from 'vue';
 
   const inspectionList = ref<TableData[]>();
   const { loading, setLoading } = useLoading();
@@ -134,6 +141,10 @@
   export default {
     setup() {
       const columns = [
+        {
+          title: 'ID',
+          dataIndex: 'id',
+        },
         {
           title: '中间件',
           dataIndex: 'name',
@@ -201,6 +212,12 @@
           slotName: 'optional',
         },
       ];
+      const selectedKeys = ref([]);
+      const rowSelection = reactive({
+        type: 'checkbox',
+        showCheckedAll: true,
+        // onlyCurrent: false,
+      });
       const inspect = (id: number) => {
         setLoading(true);
         setInspectLoading(id, inspectionList, true);
@@ -212,6 +229,18 @@
           .catch((error) => {
             inspectTaskFailed(error.message);
             fetchData();
+          });
+        setLoading(false);
+      };
+      const inspectSelection = (selectIds: number[]) => {
+        setLoading(true);
+        startInspectSelection(selectIds)
+          .then((response) => {
+            inspectTaskFinished();
+            fetchData();
+          })
+          .catch((error) => {
+            inspectTaskFailed(error.message);
           });
         setLoading(false);
       };
@@ -233,6 +262,7 @@
       const detailTaskId = ref(0);
       const inspectLoading = ref(true);
       const showDetail = (id: number, scName: string) => {
+        console.log(selectedKeys.value);
         detailTitle.value = scName;
         inspectDetail(id)
           .then((response) => {
@@ -250,6 +280,9 @@
         visible.value = false;
       };
       return {
+        selectedKeys,
+        inspectSelection,
+        rowSelection,
         columns,
         inspectionList,
         detailList,
