@@ -32,7 +32,22 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="inspectSelection(selectedKeys)">
+            <a-button
+              v-if="selectedKeys.length === 0"
+              disabled
+              type="primary"
+              @click="inspectSelection(selectedKeys)"
+            >
+              <template #icon>
+                <icon-refresh />
+              </template>
+              {{ $t('inspect.operation.all') }}
+            </a-button>
+            <a-button
+              v-else
+              type="primary"
+              @click="inspectSelection(selectedKeys)"
+            >
               <template #icon>
                 <icon-refresh />
               </template>
@@ -90,8 +105,6 @@
 <script lang="ts">
   import {
     queryInspectionList,
-    startInspect,
-    startInspectAll,
     inspectDetail,
     startInspectSelection,
   } from '@/api/inspection';
@@ -137,7 +150,6 @@
       content: err,
     });
   };
-
   export default {
     setup() {
       const columns = [
@@ -218,20 +230,6 @@
         showCheckedAll: true,
         // onlyCurrent: false,
       });
-      const inspect = (id: number) => {
-        setLoading(true);
-        setInspectLoading(id, inspectionList, true);
-        startInspect(id)
-          .then((response) => {
-            inspectTaskFinished();
-            fetchData();
-          })
-          .catch((error) => {
-            inspectTaskFailed(error.message);
-            fetchData();
-          });
-        setLoading(false);
-      };
       const inspectSelection = (selectIds: number[]) => {
         setLoading(true);
         startInspectSelection(selectIds)
@@ -244,16 +242,9 @@
           });
         setLoading(false);
       };
-      const inspectAll = () => {
-        setLoading(true);
-        startInspectAll()
-          .then((response) => {
-            inspectTaskFinished();
-          })
-          .catch((error) => {
-            inspectTaskFailed(error.message);
-          });
-        setLoading(false);
+      const inspect = (id: number) => {
+        setInspectLoading(id, inspectionList, true);
+        inspectSelection([id]);
       };
       fetchData();
       const visible = ref(false);
@@ -262,7 +253,6 @@
       const detailTaskId = ref(0);
       const inspectLoading = ref(true);
       const showDetail = (id: number, scName: string) => {
-        console.log(selectedKeys.value);
         detailTitle.value = scName;
         inspectDetail(id)
           .then((response) => {
@@ -287,7 +277,6 @@
         inspectionList,
         detailList,
         inspect,
-        inspectAll,
         visible,
         showDetail,
         handleOk,
