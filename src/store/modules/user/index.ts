@@ -65,6 +65,7 @@ const useUserStore = defineStore('user', {
       try {
         const res = await userLogin(loginForm);
         setToken(res.data.token);
+        window.localStorage.setItem('userRole', res.data.role);
       } catch (err) {
         clearToken();
         throw err;

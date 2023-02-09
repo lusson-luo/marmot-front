@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth';
 
 export interface HttpResponse<T = unknown> {
   status: number;
-  msg: string;
+  message: string;
   code: number;
   data: T;
 }
@@ -43,7 +43,7 @@ axios.interceptors.response.use(
     // if (res.code !== 20000) {
     if (res.code !== 0 && res.code !== 20000) {
       Message.error({
-        content: res.msg || 'Error',
+        content: res.message || 'Error',
         duration: 5 * 1000,
       });
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
@@ -53,9 +53,8 @@ axios.interceptors.response.use(
       ) {
         Modal.error({
           title: 'Confirm logout',
-          content:
-            'You have been logged out, you can cancel to stay on this page, or log in again',
-          okText: 'Re-Login',
+          content: '您已登出，您可以取消以留在此页面，或重新登录',
+          okText: '重新登陆',
           async onOk() {
             const userStore = useUserStore();
 
@@ -64,7 +63,7 @@ axios.interceptors.response.use(
           },
         });
       }
-      return Promise.reject(new Error(res.msg || 'Error'));
+      return Promise.reject(new Error(res.message || 'Error'));
     }
     return res;
   },
