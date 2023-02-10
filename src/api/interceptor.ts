@@ -2,7 +2,9 @@ import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Message, Modal } from '@arco-design/web-vue';
 import { useUserStore } from '@/store';
-import { getToken } from '@/utils/auth';
+import { getToken, setToken } from '@/utils/auth';
+import jwtDecode from 'jwt-decode';
+import { refreshToken } from '@/api/user';
 
 export interface HttpResponse<T = unknown> {
   status: number;
@@ -22,7 +24,24 @@ axios.interceptors.request.use(
     // Authorization is a custom headers key
     // please modify it according to the actual situation
     const token = getToken();
+    // const tokenData = jwt.decode(token);
+
+    // decodedHeader.exp
     if (token) {
+      const decodedHeader = jwtDecode(token);
+      const now = Date.parse(new Date().toString()) / 1000;
+      if (
+        config.url !== '/api/user/refresh' &&
+        decodedHeader.exp > now &&
+        decodedHeader.exp - 60 < now
+      ) {
+        console.log('ref token', now, decodedHeader.exp);
+        refreshToken()
+          .then((res) => {
+            setToken(res.data.token);
+          })
+          .finally();
+      }
       if (!config.headers) {
         config.headers = {};
       }

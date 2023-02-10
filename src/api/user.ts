@@ -11,8 +11,13 @@ export interface LoginRes {
   token: string;
   role: string;
 }
+
 export function login(data: LoginData) {
   return axios.post<LoginRes>('/api/user/login', data);
+}
+
+export function refreshToken() {
+  return axios.post<LoginRes>('/api/user/refresh');
 }
 
 export function logout() {

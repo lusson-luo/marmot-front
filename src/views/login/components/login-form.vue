@@ -46,7 +46,7 @@
           <a-checkbox
             checked="rememberPassword"
             :model-value="loginConfig.rememberPassword"
-            @change="(setRememberPassword as any)"
+            @change="setRememberPassword as any"
           >
             {{ $t('login.form.rememberPassword') }}
           </a-checkbox>
@@ -73,6 +73,7 @@
   import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
   import type { LoginData } from '@/api/user';
+  import { sha256 } from 'js-sha256';
 
   const router = useRouter();
   const { t } = useI18n();
@@ -101,7 +102,10 @@
     if (!errors) {
       setLoading(true);
       try {
+        const passwordTmp = values.password;
+        values.password = sha256(values.password);
         await userStore.login(values as LoginData);
+        values.password = passwordTmp;
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
           name: (redirect as string) || 'Workplace',
