@@ -30,18 +30,19 @@ axios.interceptors.request.use(
     if (token) {
       const decodedHeader = jwtDecode(token);
       const now = Date.parse(new Date().toString()) / 1000;
+      // token 续期，如果 token 有效期小于60s，发起续期请求
       if (
         config.url !== '/api/user/refresh' &&
         decodedHeader.exp > now &&
         decodedHeader.exp - 60 < now
       ) {
-        console.log('ref token', now, decodedHeader.exp);
         refreshToken()
           .then((res) => {
             setToken(res.data.token);
           })
           .finally();
       }
+      // header 头携带 token
       if (!config.headers) {
         config.headers = {};
       }

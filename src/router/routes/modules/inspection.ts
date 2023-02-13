@@ -1,7 +1,7 @@
 import { DEFAULT_LAYOUT } from '../base';
 import { AppRouteRecordRaw } from '../types';
 
-const DASHBOARD: AppRouteRecordRaw = {
+const INSPECTION: AppRouteRecordRaw = {
   path: '/inspection',
   name: 'inspection',
   component: DEFAULT_LAYOUT,
@@ -25,4 +25,4 @@ const DASHBOARD: AppRouteRecordRaw = {
   ],
 };
 
-export default DASHBOARD;
+export default INSPECTION;

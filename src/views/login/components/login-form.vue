@@ -108,7 +108,7 @@
         values.password = passwordTmp;
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
-          name: (redirect as string) || 'Workplace',
+          name: (redirect as string) || 'inspection',
           query: {
             ...othersQuery,
           },
